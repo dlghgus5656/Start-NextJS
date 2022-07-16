@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
       <style jsx global>
         {`
           a {
-            color: white;
+            color: green;
           }
         `}
       </style>
