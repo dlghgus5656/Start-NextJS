@@ -17,15 +17,7 @@ import { useRouter } from "next/router";
 export default function Home({ results }) {
   const router = useRouter();
   const onClick = (id, title) => {
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title,
-        },
-      },
-      `/movies/${id}`
-    );
+    router.push(`/movies/${title}/${id}`);
   };
   // const [movies, setMovies] = useState();
   // useEffect(() => {
@@ -51,15 +43,7 @@ export default function Home({ results }) {
         >
           <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
           <h4>
-            <Link
-              href={{
-                pathname: `/movies/${movie.id}`,
-                query: {
-                  title: movie.original_title,
-                },
-              }}
-              as={`/movies/${movie.id}`}
-            >
+            <Link href={`/movies/${movie.original_title}/${movie.id}`}>
               <a>{movie.original_title}</a>
             </Link>
           </h4>
@@ -98,6 +82,7 @@ export default function Home({ results }) {
 // getServerSideProps는 프론트에 보이지 않고 백엔드에서만 작동한다.
 // 따라서 API key를 넣을 수도 있고 데이터를 가져오거나, 원하는건 다 할 수 있다.
 // 완전한 서버 사이드 렌더링으로 작동한다. 유저는 백엔드에서 처리하기 전까지 화면에서 아무것도 보지못한다.
+// 즉 아래 API의 응답이 느리면 그동안 유저에게는 아무것도 보이지 않는다.
 export async function getServerSideProps() {
   const { results } = await (
     await fetch(`http://localhost:3000/api/movies`)
